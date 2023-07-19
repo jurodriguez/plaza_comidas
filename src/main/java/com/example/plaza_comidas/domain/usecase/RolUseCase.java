@@ -2,7 +2,7 @@ package com.example.plaza_comidas.domain.usecase;
 
 import com.example.plaza_comidas.domain.api.IRolServicePort;
 import com.example.plaza_comidas.domain.model.Rol;
-import com.example.plaza_comidas.domain.spi.IRolPersistencePort;
+import com.example.plaza_comidas.domain.spi.persistence.IRolPersistencePort;
 
 import java.util.List;
 

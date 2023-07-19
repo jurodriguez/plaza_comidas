@@ -1,8 +1,8 @@
 package com.example.plaza_comidas.infrastructure.output.jpa.adapter;
 
 import com.example.plaza_comidas.domain.model.Rol;
-import com.example.plaza_comidas.domain.spi.IRolPersistencePort;
-import com.example.plaza_comidas.infrastructure.exception.NoDataFoundException;
+import com.example.plaza_comidas.domain.spi.persistence.IRolPersistencePort;
+import com.example.plaza_comidas.infrastructure.exception.UserNumberDocumentIncorrectException;
 import com.example.plaza_comidas.infrastructure.exception.RolNotFoundException;
 import com.example.plaza_comidas.infrastructure.output.jpa.entity.RolEntity;
 import com.example.plaza_comidas.infrastructure.output.jpa.mapper.RolEntityMapper;
@@ -27,7 +27,7 @@ public class RolJpaAdapter implements IRolPersistencePort {
     public List<Rol> getAllRol() {
         List<RolEntity> rolEntityList = rolRepository.findAll();
         if (rolEntityList.isEmpty()) {
-            throw new NoDataFoundException();
+            throw new UserNumberDocumentIncorrectException();
         }
 
         return rolEntityMapper.toRolList(rolEntityList);

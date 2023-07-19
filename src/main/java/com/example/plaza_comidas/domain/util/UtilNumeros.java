@@ -5,6 +5,10 @@ import java.util.regex.Pattern;
 
 public class UtilNumeros {
 
+    private UtilNumeros() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static boolean esSoloNumero(String cadena) {
         Pattern patron = Pattern.compile("^\\d+$");
         Matcher matcher = patron.matcher(cadena);

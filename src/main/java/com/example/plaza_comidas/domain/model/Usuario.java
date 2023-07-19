@@ -14,15 +14,16 @@ public class Usuario {
     private String clave;
     private Long idRol;
 
-    public Usuario(Long id, String nombre, String apellido, String numeroDocumento, String celular, LocalDate fechaNacimiento, String correo, String clave, Long idRol) {
-        this.id = id;
+    public Usuario() {
+    }
+
+    public Usuario(String nombre, String apellido, String numeroDocumento, String celular, LocalDate fechaNacimiento, String correo, Long idRol) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.numeroDocumento = numeroDocumento;
         this.celular = celular;
         this.fechaNacimiento = fechaNacimiento;
         this.correo = correo;
-        this.clave = clave;
         this.idRol = idRol;
     }
 

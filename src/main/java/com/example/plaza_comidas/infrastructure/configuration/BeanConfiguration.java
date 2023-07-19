@@ -2,8 +2,9 @@ package com.example.plaza_comidas.infrastructure.configuration;
 
 import com.example.plaza_comidas.domain.api.IRolServicePort;
 import com.example.plaza_comidas.domain.api.IUsuarioServicePort;
-import com.example.plaza_comidas.domain.spi.IRolPersistencePort;
-import com.example.plaza_comidas.domain.spi.IUsuarioPersistencePort;
+import com.example.plaza_comidas.domain.spi.passwordencoder.IUsuarioPasswordEncoderPort;
+import com.example.plaza_comidas.domain.spi.persistence.IRolPersistencePort;
+import com.example.plaza_comidas.domain.spi.persistence.IUsuarioPersistencePort;
 import com.example.plaza_comidas.domain.usecase.RolUseCase;
 import com.example.plaza_comidas.domain.usecase.UsuarioUseCase;
 import com.example.plaza_comidas.infrastructure.output.jpa.adapter.RolJpaAdapter;
@@ -12,8 +13,7 @@ import com.example.plaza_comidas.infrastructure.output.jpa.mapper.RolEntityMappe
 import com.example.plaza_comidas.infrastructure.output.jpa.mapper.UsuarioEntityMapper;
 import com.example.plaza_comidas.infrastructure.output.jpa.repository.IRolRepository;
 import com.example.plaza_comidas.infrastructure.output.jpa.repository.IUsuarioRepository;
-import com.example.plaza_comidas.infrastructure.output.mongodb.mapper.TrazabilidadEntityMapper;
-import com.example.plaza_comidas.infrastructure.output.mongodb.repository.ITrazabilidadRepository;
+import com.example.plaza_comidas.infrastructure.output.passwordencoder.BCrypPasswordEncoderAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,9 +26,12 @@ public class BeanConfiguration {
     private final UsuarioEntityMapper usuarioEntityMapper;
     private final IRolRepository rolRepository;
     private final RolEntityMapper rolEntityMapper;
-    private final ITrazabilidadRepository trazabilidadRepository;
-    private final TrazabilidadEntityMapper trazabilidadEntityMapper;
 
+
+    @Bean
+    public IUsuarioPasswordEncoderPort usuarioPasswordEncoderPort() {
+        return new BCrypPasswordEncoderAdapter();
+    }
 
     @Bean
     public IUsuarioPersistencePort usuarioPersistencePort() {
@@ -37,16 +40,16 @@ public class BeanConfiguration {
 
     @Bean
     public IUsuarioServicePort usuarioServicePort() {
-        return new UsuarioUseCase(usuarioPersistencePort());
+        return new UsuarioUseCase(usuarioPersistencePort(), usuarioPasswordEncoderPort());
     }
 
     @Bean
-    public IRolPersistencePort rolPersistencePort(){
+    public IRolPersistencePort rolPersistencePort() {
         return new RolJpaAdapter(rolRepository, rolEntityMapper);
     }
 
     @Bean
-    public IRolServicePort rolServicePort(){
+    public IRolServicePort rolServicePort() {
         return new RolUseCase(rolPersistencePort());
     }
 }
