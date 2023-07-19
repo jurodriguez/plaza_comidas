@@ -16,7 +16,7 @@ public class FactoryUsersDataTest {
         usuario.setFechaNacimiento(LocalDate.of(2005, 07, 18));
         usuario.setCorreo("david@pragma.com");
         usuario.setClave("password");
-        // usuario.setRol(getRol());
+        //usuario.setIdRol(2L);
         return usuario;
     }
 }

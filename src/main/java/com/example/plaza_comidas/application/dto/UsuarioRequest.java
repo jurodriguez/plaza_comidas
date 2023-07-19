@@ -12,21 +12,21 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class UsuarioRequest {
-    @NotNull(message = "El campo nombre es requerido")
+    @NotBlank(message = "Name field is required")
     private String nombre;
-    @NotBlank(message = "El campo apellido es requerido")
+    @NotBlank(message = "Last name field is required")
     private String apellido;
-    @NotNull(message = "El campo numero de documento es requerido")
+    @NotBlank(message = "Number document field is required")
     private String numeroDocumento;
-    @NotNull(message = "El campo celular es requerido")
+    @NotBlank(message = "Number phone field is required")
     @Size(max = 13)
     private String celular;
-    @NotNull(message = "El campo fecha de nacimiento es requerido")
+    @NotNull(message = "The date of birth field is required")
     private LocalDate fechaNacimiento;
-    @NotNull(message = "El campo correo es requerido")
-    @Email(message = "El correo no tiene una estructura valida")
+    @NotBlank(message = "The email field is required")
+    @Email(message = "The email doesn't have a valid structure")
     private String correo;
-    @NotNull(message = "El campo clave es requerido")
+    @NotNull(message = "The password field is required")
     private String clave;
     private String nombreRol;
     private String descripcionRol;

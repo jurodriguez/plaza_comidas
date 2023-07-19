@@ -1,6 +1,7 @@
 package com.example.plaza_comidas.domain.usecase;
 
 import com.example.plaza_comidas.domain.api.IUsuarioServicePort;
+import com.example.plaza_comidas.domain.model.ERoles;
 import com.example.plaza_comidas.domain.model.Usuario;
 import com.example.plaza_comidas.domain.spi.passwordencoder.IUsuarioPasswordEncoderPort;
 import com.example.plaza_comidas.domain.spi.persistence.IUsuarioPersistencePort;
@@ -27,8 +28,7 @@ public class UsuarioUseCase implements IUsuarioServicePort {
 
         //Se asigna un rol por defecto si no trae rol asignado
         if (usuario.getIdRol() == null) {
-            Long idRol = 2L;
-            usuario.setIdRol(idRol);
+            usuario.setIdRol(ERoles.PROPIETARIO.getId());
         }
 
         saveValidations(usuario);

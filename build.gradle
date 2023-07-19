@@ -29,7 +29,7 @@ dependencies {
     implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.1.0'
 
     // Spring Security
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+    //implementation 'org.springframework.boot:spring-boot-starter-security'
 
     //jbcrypt
     implementation 'org.mindrot:jbcrypt:0.4'
