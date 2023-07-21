@@ -1,18 +1,18 @@
 package com.example.plaza_comidas.infrastructure.configuration;
 
-import com.example.plaza_comidas.domain.api.IRolServicePort;
-import com.example.plaza_comidas.domain.api.IUsuarioServicePort;
-import com.example.plaza_comidas.domain.spi.passwordencoder.IUsuarioPasswordEncoderPort;
-import com.example.plaza_comidas.domain.spi.persistence.IRolPersistencePort;
-import com.example.plaza_comidas.domain.spi.persistence.IUsuarioPersistencePort;
-import com.example.plaza_comidas.domain.usecase.RolUseCase;
-import com.example.plaza_comidas.domain.usecase.UsuarioUseCase;
-import com.example.plaza_comidas.infrastructure.output.jpa.adapter.RolJpaAdapter;
-import com.example.plaza_comidas.infrastructure.output.jpa.adapter.UsuarioJpaAdapter;
-import com.example.plaza_comidas.infrastructure.output.jpa.mapper.RolEntityMapper;
-import com.example.plaza_comidas.infrastructure.output.jpa.mapper.UsuarioEntityMapper;
-import com.example.plaza_comidas.infrastructure.output.jpa.repository.IRolRepository;
-import com.example.plaza_comidas.infrastructure.output.jpa.repository.IUsuarioRepository;
+import com.example.plaza_comidas.domain.api.IRoleServicePort;
+import com.example.plaza_comidas.domain.api.IUserServicePort;
+import com.example.plaza_comidas.domain.spi.passwordencoder.IUserPasswordEncoderPort;
+import com.example.plaza_comidas.domain.spi.persistence.IRolePersistencePort;
+import com.example.plaza_comidas.domain.spi.persistence.IUserPersistencePort;
+import com.example.plaza_comidas.domain.usecase.RoleUseCase;
+import com.example.plaza_comidas.domain.usecase.UserUseCase;
+import com.example.plaza_comidas.infrastructure.output.jpa.adapter.RoleJpaAdapter;
+import com.example.plaza_comidas.infrastructure.output.jpa.adapter.UserJpaAdapter;
+import com.example.plaza_comidas.infrastructure.output.jpa.mapper.RoleEntityMapper;
+import com.example.plaza_comidas.infrastructure.output.jpa.mapper.UserEntityMapper;
+import com.example.plaza_comidas.infrastructure.output.jpa.repository.IRoleRepository;
+import com.example.plaza_comidas.infrastructure.output.jpa.repository.IUserRepository;
 import com.example.plaza_comidas.infrastructure.output.passwordencoder.BCrypPasswordEncoderAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -22,34 +22,34 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class BeanConfiguration {
 
-    private final IUsuarioRepository usuarioRepository;
-    private final UsuarioEntityMapper usuarioEntityMapper;
-    private final IRolRepository rolRepository;
-    private final RolEntityMapper rolEntityMapper;
+    private final IUserRepository userRepository;
+    private final UserEntityMapper userEntityMapper;
+    private final IRoleRepository roleRepository;
+    private final RoleEntityMapper roleEntityMapper;
 
 
     @Bean
-    public IUsuarioPasswordEncoderPort usuarioPasswordEncoderPort() {
+    public IUserPasswordEncoderPort userPasswordEncoderPort() {
         return new BCrypPasswordEncoderAdapter();
     }
 
     @Bean
-    public IUsuarioPersistencePort usuarioPersistencePort() {
-        return new UsuarioJpaAdapter(usuarioRepository, usuarioEntityMapper);
+    public IUserPersistencePort userPersistencePort() {
+        return new UserJpaAdapter(userRepository, userEntityMapper);
     }
 
     @Bean
-    public IUsuarioServicePort usuarioServicePort() {
-        return new UsuarioUseCase(usuarioPersistencePort(), usuarioPasswordEncoderPort());
+    public IUserServicePort userServicePort() {
+        return new UserUseCase(userPersistencePort(), userPasswordEncoderPort());
     }
 
     @Bean
-    public IRolPersistencePort rolPersistencePort() {
-        return new RolJpaAdapter(rolRepository, rolEntityMapper);
+    public IRolePersistencePort rolePersistencePort() {
+        return new RoleJpaAdapter(roleRepository, roleEntityMapper);
     }
 
     @Bean
-    public IRolServicePort rolServicePort() {
-        return new RolUseCase(rolPersistencePort());
+    public IRoleServicePort roleServicePort() {
+        return new RoleUseCase(rolePersistencePort());
     }
 }

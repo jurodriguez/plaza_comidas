@@ -11,23 +11,23 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class UsuarioRequest {
+public class UserRequest {
     @NotBlank(message = "Name field is required")
-    private String nombre;
+    private String name;
     @NotBlank(message = "Last name field is required")
-    private String apellido;
-    @NotBlank(message = "Number document field is required")
-    private String numeroDocumento;
+    private String lastName;
+    @NotBlank(message = "Document number field is required")
+    private String documentNumber;
     @NotBlank(message = "Number phone field is required")
     @Size(max = 13)
-    private String celular;
-    @NotNull(message = "The date of birth field is required")
-    private LocalDate fechaNacimiento;
+    private String cellPhone;
+    @NotNull(message = "The birth date field is required")
+    private LocalDate birthDate;
     @NotBlank(message = "The email field is required")
     @Email(message = "The email doesn't have a valid structure")
-    private String correo;
+    private String email;
     @NotNull(message = "The password field is required")
-    private String clave;
-    private String nombreRol;
-    private String descripcionRol;
+    private String password;
+    private String roleName;
+    private String roleDescription;
 }

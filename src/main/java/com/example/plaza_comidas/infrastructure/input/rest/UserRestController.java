@@ -1,7 +1,7 @@
 package com.example.plaza_comidas.infrastructure.input.rest;
 
-import com.example.plaza_comidas.application.dto.UsuarioRequest;
-import com.example.plaza_comidas.application.handler.IUsuarioHandler;
+import com.example.plaza_comidas.application.dto.UserRequest;
+import com.example.plaza_comidas.application.handler.IUserHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
-public class UsuarioRestController {
+public class UserRestController {
 
-    private final IUsuarioHandler usuarioHandler;
+    private final IUserHandler userHandler;
 
     @Operation(summary = "Add a new user")
     @ApiResponses(value = {
@@ -27,8 +27,8 @@ public class UsuarioRestController {
             @ApiResponse(responseCode = "400", description = "Object invalid", content = @Content)
     })
     @PostMapping("/user")
-    public ResponseEntity<String> saveUsuarioInUsuarios(@RequestBody UsuarioRequest usuarioRequest) {
-        usuarioHandler.saveUsuarioInUsuarios(usuarioRequest);
+    public ResponseEntity<String> saveUserInUsers(@RequestBody UserRequest userRequest) {
+        userHandler.saveUserInUsers(userRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

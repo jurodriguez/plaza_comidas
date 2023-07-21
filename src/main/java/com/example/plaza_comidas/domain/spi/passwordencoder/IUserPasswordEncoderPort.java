@@ -1,6 +1,6 @@
 package com.example.plaza_comidas.domain.spi.passwordencoder;
 
-public interface IUsuarioPasswordEncoderPort {
+public interface IUserPasswordEncoderPort {
 
     String encode(String password);
 }

@@ -1,25 +1,25 @@
 package com.example.plaza_comidas.domain.model;
 
 public enum ERoles {
-    ADMINISTRADOR(1L, "Administrador"),
-    PROPIETARIO(2L, "Propietario"),
-    EMPLEADO(3L, "Empleado"),
-    CLIENTE(4L, "Cliente");
+    ADMINISTRATOR(1L, "Administrator"),
+    OWNER(2L, "Owner"),
+    EMPLOYEE(3L, "Employee"),
+    CUSTOMER(4L, "Customer");
 
     private final Long id;
 
-    private final String nombre;
+    private final String name;
 
-    ERoles(Long id, String nombre) {
+    ERoles(Long id, String name) {
         this.id = id;
-        this.nombre = nombre;
+        this.name = name;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 }

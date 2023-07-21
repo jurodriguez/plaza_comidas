@@ -33,8 +33,8 @@ public class ControllerAdvisor {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleException(Exception exception) {
-        log.info("llega Excepcion:" + exception.getClass().toString());
-        String messageException = "";
+        log.info("Exception arrives:" + exception.getClass().toString());
+        String messageException;
         if (exception.getClass().toString().equals("class jakarta.validation.ConstraintViolationException")) {
             messageException = exception.getMessage();
         } else {

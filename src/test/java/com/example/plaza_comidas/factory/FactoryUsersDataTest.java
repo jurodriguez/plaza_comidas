@@ -1,22 +1,22 @@
 package com.example.plaza_comidas.factory;
 
-import com.example.plaza_comidas.domain.model.Usuario;
+import com.example.plaza_comidas.domain.model.User;
 
 import java.time.LocalDate;
 
 public class FactoryUsersDataTest {
 
-    public static Usuario getUsuario(){
-        Usuario usuario= new Usuario();
-        usuario.setId(1L);
-        usuario.setNombre("David");
-        usuario.setApellido("Ballesteros");
-        usuario.setCelular("+573238123367");
-        usuario.setNumeroDocumento("1006287478");
-        usuario.setFechaNacimiento(LocalDate.of(2005, 07, 18));
-        usuario.setCorreo("david@pragma.com");
-        usuario.setClave("password");
-        //usuario.setIdRol(2L);
-        return usuario;
+    public static User getUsuario(){
+        User user = new User();
+        user.setId(1L);
+        user.setName("David");
+        user.setLastName("Ballesteros");
+        user.setCellPhone("+573238123367");
+        user.setDocumentNumber("1006287478");
+        user.setBirthDate(LocalDate.of(2005, 07, 18));
+        user.setEmail("david@pragma.com");
+        user.setPassword("password");
+        //user.setRoleId(2L);
+        return user;
     }
 }

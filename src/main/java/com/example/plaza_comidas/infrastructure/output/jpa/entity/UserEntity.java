@@ -9,22 +9,22 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "usuario")
+@Table(name = "user")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class UsuarioEntity {
+public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nombre;
-    private String apellido;
-    private String numeroDocumento;
-    private String celular;
-    private LocalDate fechaNacimiento;
-    private String correo;
-    private String clave;
-    private Long idRol;
+    private String name;
+    private String lastName;
+    private String documentNumber;
+    private String cellPhone;
+    private LocalDate birthDate;
+    private String email;
+    private String password;
+    private Long roleId;
 }
