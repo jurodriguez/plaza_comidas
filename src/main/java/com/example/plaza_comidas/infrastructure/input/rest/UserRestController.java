@@ -1,6 +1,7 @@
 package com.example.plaza_comidas.infrastructure.input.rest;
 
 import com.example.plaza_comidas.application.dto.UserRequest;
+import com.example.plaza_comidas.application.dto.UserResponse;
 import com.example.plaza_comidas.application.handler.IUserHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
 public class UserRestController {
 
@@ -26,9 +27,14 @@ public class UserRestController {
             @ApiResponse(responseCode = "200", description = "Object created", content = @Content),
             @ApiResponse(responseCode = "400", description = "Object invalid", content = @Content)
     })
-    @PostMapping("/user")
+    @PostMapping("/")
     public ResponseEntity<String> saveUserInUsers(@RequestBody UserRequest userRequest) {
         userHandler.saveUserInUsers(userRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponse> getUserById(@PathVariable(value = "id") Long userId) {
+        return ResponseEntity.ok(userHandler.getUserById(userId));
     }
 }
