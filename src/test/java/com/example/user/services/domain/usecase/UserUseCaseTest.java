@@ -25,7 +25,7 @@ class UserUseCaseTest {
 
     @Test
     void mustSaveUser() {
-        User user = FactoryUsersDataTest.getUsuario();
+        User user = FactoryUsersDataTest.getUser();
 
         Mockito.when(userPasswordEncoderPort.encode(Mockito.any())).thenReturn("encodedPassword#gfdg23232");
 
@@ -34,5 +34,15 @@ class UserUseCaseTest {
         //Then
         Mockito.verify(userPasswordEncoderPort).encode("password");
         Mockito.verify(userPersistencePort).saveUser(Mockito.any(User.class));
+    }
+
+    @Test
+    void mustGetAUserById() {
+        User user = FactoryUsersDataTest.getUser();
+
+        Mockito.when(userPersistencePort.getUserById(Mockito.anyLong())).thenReturn(user);
+
+        userUseCase.getUserById(user.getId());
+        Mockito.verify(userPersistencePort).getUserById(Mockito.anyLong());
     }
 }

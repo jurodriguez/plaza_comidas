@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 public class FactoryUsersDataTest {
 
-    public static User getUsuario(){
+    public static User getUser() {
         User user = new User();
         user.setId(1L);
         user.setName("David");

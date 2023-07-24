@@ -7,8 +7,12 @@ import com.example.user.services.domain.spi.passwordencoder.IUserPasswordEncoder
 import com.example.user.services.domain.spi.persistence.IUserPersistencePort;
 import com.example.user.services.domain.util.UtilDateTime;
 import com.example.user.services.domain.util.UtilNumbers;
+import com.example.user.services.infrastructure.exception.PhoneNumberException;
 import com.example.user.services.infrastructure.exception.UserIsNotLegalAgeException;
 import com.example.user.services.infrastructure.exception.UserNumberDocumentIncorrectException;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UserUseCase implements IUserServicePort {
 
@@ -42,7 +46,21 @@ public class UserUseCase implements IUserServicePort {
             throw new UserNumberDocumentIncorrectException();
         }
 
-        //Validate that the user is of legal age
+        phoneValidation(user.getCellPhone());
+        validateUserAge(user);
+    }
+
+    private static void phoneValidation(String phone) {
+        String regex = "^(\\+?\\d{1,3})?\\d{8,}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(phone);
+
+        if (!matcher.matches()) {
+            throw new PhoneNumberException();
+        }
+    }
+
+    private static void validateUserAge(User user) {
         int adult = 18;
         if (user.getBirthDate() == null || UtilDateTime.calculateAge(user.getBirthDate()) < adult) {
             throw new UserIsNotLegalAgeException();

@@ -1,5 +1,6 @@
 package com.example.user.services.infrastructure.exceptionhandler;
 
+import com.example.user.services.infrastructure.exception.PhoneNumberException;
 import com.example.user.services.infrastructure.exception.UserIsNotLegalAgeException;
 import com.example.user.services.infrastructure.exception.UserNumberDocumentIncorrectException;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,11 @@ public class ControllerAdvisor {
             UserIsNotLegalAgeException userIsNotLegalAgeException) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.USER_IS_NOT_LEGAL_AGE.getMessage()));
+    }
+
+    @ExceptionHandler(PhoneNumberException.class)
+    public ResponseEntity<Map<String, String>> handlePhoneNumberException(PhoneNumberException ignoredPhoneNumberException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap(MESSAGE, ExceptionResponse.PHONE_NUMBER_INCORRECT.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)
