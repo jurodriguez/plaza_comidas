@@ -10,4 +10,6 @@ public interface IUserHandler {
 
     UserResponse getUserById(Long id);
 
+    UserResponse getUserByEmail(String email);
+
 }

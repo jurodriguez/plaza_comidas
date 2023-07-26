@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -28,6 +29,7 @@ public class UserRestController {
             @ApiResponse(responseCode = "400", description = "Object invalid", content = @Content)
     })
     @PostMapping("/")
+    @PreAuthorize("hasAuthority('ADMINISTRATOR')")
     public ResponseEntity<String> saveUserInUsers(@RequestBody UserRequest userRequest) {
         userHandler.saveUserInUsers(userRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -36,5 +38,15 @@ public class UserRestController {
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable(value = "id") Long userId) {
         return ResponseEntity.ok(userHandler.getUserById(userId));
+    }
+
+    @Operation(summary = "Get a user by email")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User returned", content = @Content),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
+    })
+    @GetMapping("/email/{email}")
+    public ResponseEntity<UserResponse> getUserByEmail(@PathVariable(value = "email") String email) {
+        return ResponseEntity.ok((userHandler.getUserByEmail(email)));
     }
 }
