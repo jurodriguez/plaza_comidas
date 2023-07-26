@@ -1,5 +1,6 @@
 package com.example.user.services.infrastructure.exceptionhandler;
 
+import com.example.user.services.infrastructure.exception.NoDataFoundException;
 import com.example.user.services.infrastructure.exception.PhoneNumberException;
 import com.example.user.services.infrastructure.exception.UserIsNotLegalAgeException;
 import com.example.user.services.infrastructure.exception.UserNumberDocumentIncorrectException;
@@ -23,6 +24,13 @@ public class ControllerAdvisor {
             UserNumberDocumentIncorrectException userNumberDocumentIncorrectException) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.NUMBER_DOCUMENT_INCORRECT.getMessage()));
+    }
+
+    @ExceptionHandler(NoDataFoundException.class)
+    public ResponseEntity<Map<String, String>> handleNoDataFoundException(
+            NoDataFoundException ignoredNoDataFoundException) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.NO_DATA_FOUND.getMessage()));
     }
 
     @ExceptionHandler(UserIsNotLegalAgeException.class)

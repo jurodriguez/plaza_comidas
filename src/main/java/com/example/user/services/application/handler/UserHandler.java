@@ -40,4 +40,14 @@ public class UserHandler implements IUserHandler {
         return userResponseMapper.toResponse(user, role);
     }
 
+    @Override
+    public UserResponse getUserByEmail(String email) {
+        User user = userServicePort.getUserByEmail(email);
+        Role role = new Role();
+        if (user != null && user.getRoleId() != null) {
+            role = roleServicePort.getRole(user.getRoleId());
+        }
+        return userResponseMapper.toResponse(user, role);
+    }
+
 }
