@@ -23,15 +23,28 @@ public class UserRestController {
 
     private final IUserHandler userHandler;
 
-    @Operation(summary = "Add a new user")
+    @Operation(summary = "Add a new owner")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Object created", content = @Content),
             @ApiResponse(responseCode = "400", description = "Object invalid", content = @Content)
     })
-    @PostMapping("/")
+    @PostMapping("/owner")
     @PreAuthorize("hasAuthority('ADMINISTRATOR')")
-    public ResponseEntity<String> saveUserInUsers(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<String> saveUserOwner(@RequestBody UserRequest userRequest) {
         userHandler.saveUserInUsers(userRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @Operation(summary = "Add a new employee")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Object created", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Object invalid", content = @Content)
+    })
+    @PostMapping("/employee")
+    @PreAuthorize("hasAuthority('OWNER')")
+    public ResponseEntity<String> saveUserEmployee(@RequestBody UserRequest userRequest) {
+        userHandler.saveUserInUsers(userRequest);
+        userHandler.saveRestaurantEmployee(userRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

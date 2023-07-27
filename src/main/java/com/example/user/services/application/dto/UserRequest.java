@@ -1,12 +1,12 @@
 package com.example.user.services.application.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Getter
@@ -21,13 +21,11 @@ public class UserRequest {
     @NotBlank(message = "Number phone field is required")
     @Size(max = 13)
     private String cellPhone;
-    @NotNull(message = "The birth date field is required")
     private LocalDate birthDate;
     @NotBlank(message = "The email field is required")
     @Email(message = "The email doesn't have a valid structure")
     private String email;
     @NotNull(message = "The password field is required")
     private String password;
-    private String roleName;
-    private String roleDescription;
+    private Long roleId;
 }

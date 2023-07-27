@@ -1,8 +1,11 @@
 package com.example.user.services.infrastructure.exceptionhandler;
 
 import com.example.user.services.infrastructure.exception.NoDataFoundException;
+import com.example.user.services.infrastructure.exception.OwnerNotAuthenticatedException;
 import com.example.user.services.infrastructure.exception.PhoneNumberException;
+import com.example.user.services.infrastructure.exception.RestaurantIdInvalidException;
 import com.example.user.services.infrastructure.exception.UserIsNotLegalAgeException;
+import com.example.user.services.infrastructure.exception.UserNotAuthenticatedException;
 import com.example.user.services.infrastructure.exception.UserNumberDocumentIncorrectException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -43,6 +46,21 @@ public class ControllerAdvisor {
     @ExceptionHandler(PhoneNumberException.class)
     public ResponseEntity<Map<String, String>> handlePhoneNumberException(PhoneNumberException ignoredPhoneNumberException) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap(MESSAGE, ExceptionResponse.PHONE_NUMBER_INCORRECT.getMessage()));
+    }
+
+    @ExceptionHandler(UserNotAuthenticatedException.class)
+    public ResponseEntity<Map<String, String>> handleUserNotAuthenticatedException(UserNotAuthenticatedException ignoredUserNotAuthenticatedException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap(MESSAGE, ExceptionResponse.USER_NOT_AUTHENTICATED.getMessage()));
+    }
+
+    @ExceptionHandler(OwnerNotAuthenticatedException.class)
+    public ResponseEntity<Map<String, String>> handleOwnerNotAuthenticatedException(OwnerNotAuthenticatedException ignoredOwnerNotAuthenticatedException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap(MESSAGE, ExceptionResponse.OWNER_NOT_AUTHENTICATED.getMessage()));
+    }
+
+    @ExceptionHandler(RestaurantIdInvalidException.class)
+    public ResponseEntity<Map<String, String>> handleRestaurantIdInvalidException(RestaurantIdInvalidException ignoredRestaurantIdInvalidException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap(MESSAGE, ExceptionResponse.RESTAURANT_ID_INVALID.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)

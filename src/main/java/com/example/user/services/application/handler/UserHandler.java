@@ -50,4 +50,10 @@ public class UserHandler implements IUserHandler {
         return userResponseMapper.toResponse(user, role);
     }
 
+    @Override
+    public void saveRestaurantEmployee(UserRequest userRequest) {
+        User user = userRequestMapper.toUser(userRequest);
+        userServicePort.saveRestaurantEmployee(user);
+    }
+
 }
