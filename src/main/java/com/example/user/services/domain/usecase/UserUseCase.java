@@ -2,11 +2,19 @@ package com.example.user.services.domain.usecase;
 
 import com.example.user.services.domain.api.IUserServicePort;
 import com.example.user.services.domain.model.ERoles;
+import com.example.user.services.domain.model.Restaurant;
+import com.example.user.services.domain.model.RestaurantEmployee;
 import com.example.user.services.domain.model.User;
+import com.example.user.services.domain.spi.feignclients.IRestaurantEmployeeFeignClientPort;
+import com.example.user.services.domain.spi.feignclients.IRestaurantFeignClientPort;
 import com.example.user.services.domain.spi.passwordencoder.IUserPasswordEncoderPort;
 import com.example.user.services.domain.spi.persistence.IUserPersistencePort;
+import com.example.user.services.domain.spi.token.IToken;
 import com.example.user.services.domain.util.UtilDateTime;
 import com.example.user.services.domain.util.UtilNumbers;
+import com.example.user.services.infrastructure.exception.OwnerNotAuthenticatedException;
+import com.example.user.services.infrastructure.exception.RestaurantIdInvalidException;
+import com.example.user.services.infrastructure.exception.UserNotAuthenticatedException;
 import com.example.user.services.infrastructure.exception.PhoneNumberException;
 import com.example.user.services.infrastructure.exception.UserIsNotLegalAgeException;
 import com.example.user.services.infrastructure.exception.UserNumberDocumentIncorrectException;
@@ -20,9 +28,18 @@ public class UserUseCase implements IUserServicePort {
 
     private final IUserPasswordEncoderPort userPasswordEncoderPort;
 
-    public UserUseCase(IUserPersistencePort userPersistencePort, IUserPasswordEncoderPort userPasswordEncoderPort) {
+    private final IToken token;
+
+    private final IRestaurantEmployeeFeignClientPort restaurantEmployeeFeignClientPort;
+
+    private final IRestaurantFeignClientPort restaurantFeignClientPort;
+
+    public UserUseCase(IUserPersistencePort userPersistencePort, IUserPasswordEncoderPort userPasswordEncoderPort, IToken token, IRestaurantEmployeeFeignClientPort restaurantEmployeeFeignClientPort, IRestaurantFeignClientPort restaurantFeignClientPort) {
         this.userPersistencePort = userPersistencePort;
         this.userPasswordEncoderPort = userPasswordEncoderPort;
+        this.token = token;
+        this.restaurantEmployeeFeignClientPort = restaurantEmployeeFeignClientPort;
+        this.restaurantFeignClientPort = restaurantFeignClientPort;
     }
 
     @Override
@@ -30,14 +47,26 @@ public class UserUseCase implements IUserServicePort {
         //Encrypt the key
         user.setPassword(userPasswordEncoderPort.encode(user.getPassword()));
 
-        //A role is assigned by default if you don't have a role assigned
-        if (user.getRoleId() == null) {
-            user.setRoleId(ERoles.OWNER.getId());
-        }
-
+        assignRole(user);
         saveValidations(user);
 
         userPersistencePort.saveUser(user);
+    }
+
+    private void assignRole(User user) {
+        String role = getAuthRole();
+
+        if (role.equals(ERoles.ADMINISTRATOR.getName())) {
+            user.setRoleId(ERoles.OWNER.getId());
+        } else if (role.equals(ERoles.OWNER.getName())) {
+            user.setRoleId(ERoles.EMPLOYEE.getId());
+        }
+    }
+
+    private String getAuthRole() {
+        String bearerToken = token.getBearerToken();
+        if (bearerToken == null) throw new UserNotAuthenticatedException();
+        return token.getAuthenticatedUserRole(bearerToken).toUpperCase();
     }
 
     private void saveValidations(User user) {
@@ -45,10 +74,11 @@ public class UserUseCase implements IUserServicePort {
         if (!UtilNumbers.onlyNumbers(user.getDocumentNumber())) {
             throw new UserNumberDocumentIncorrectException();
         }
-
         phoneValidation(user.getCellPhone());
-        validateUserAge(user);
+        if (user.getRoleId() != null && user.getRoleId().longValue() == ERoles.OWNER.getId().longValue())
+            validateUserAge(user);
     }
+
 
     private static void phoneValidation(String phone) {
         String regex = "^(\\+?\\d{1,3})?\\d{8,}$";
@@ -75,6 +105,39 @@ public class UserUseCase implements IUserServicePort {
     @Override
     public User getUserByEmail(String email) {
         return userPersistencePort.getUserByEmail(email);
+    }
+
+    @Override
+    public void saveRestaurantEmployee(User user) {
+        RestaurantEmployee restaurantEmployee = setRestaurantEmployeeObject(user);
+        restaurantEmployeeFeignClientPort.saveRestaurantEmployee(restaurantEmployee);
+    }
+
+    private RestaurantEmployee setRestaurantEmployeeObject(User user) {
+        RestaurantEmployee restaurantEmployee = new RestaurantEmployee();
+        restaurantEmployee.setRestaurantId(getRestaurantId());
+        restaurantEmployee.setEmployeeId(getEmployeeId(user.getEmail()));
+
+        return restaurantEmployee;
+    }
+
+    private Long getEmployeeId(String email) {
+        User user = userPersistencePort.getUserByEmail(email);
+        return user.getId();
+    }
+
+    private Long getRestaurantId() {
+        Long idOwnerAuth = getOwnerAuth();
+
+        Restaurant restaurant = restaurantFeignClientPort.getRestaurantByOwnerId(idOwnerAuth);
+        if (restaurant == null) throw new RestaurantIdInvalidException();
+        return restaurant.getOwnerId();
+    }
+
+    private Long getOwnerAuth() {
+        String bearerToken = token.getBearerToken();
+        if (bearerToken == null) throw new OwnerNotAuthenticatedException();
+        return token.getAuthenticatedUserId(bearerToken);
     }
 
 }

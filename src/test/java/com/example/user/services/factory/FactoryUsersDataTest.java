@@ -1,5 +1,6 @@
 package com.example.user.services.factory;
 
+import com.example.user.services.domain.model.ERoles;
 import com.example.user.services.domain.model.User;
 
 import java.time.LocalDate;
@@ -17,6 +18,20 @@ public class FactoryUsersDataTest {
         user.setEmail("david@pragma.com");
         user.setPassword("password");
         //user.setRoleId(2L);
+        return user;
+    }
+
+    public static User getEmployeeUser() {
+        User user = new User();
+        user.setId(2L);
+        user.setName("Luisa");
+        user.setLastName("gonzalez");
+        user.setCellPhone("+57311457891");
+        user.setDocumentNumber("654321");
+        //user.setBirthDate(LocalDate.of(2005, 07, 18));
+        user.setEmail("luisa@gmail.com");
+        user.setPassword("password");
+        user.setRoleId(ERoles.EMPLOYEE.getId());
         return user;
     }
 }

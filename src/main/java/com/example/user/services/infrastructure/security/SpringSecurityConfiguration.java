@@ -34,11 +34,11 @@ public class SpringSecurityConfiguration {
         jwtAuthenticationFilter.setFilterProcessesUrl("/login");
         return http
                 .csrf().disable()
-                .authorizeHttpRequests((authorize) -> authorize.
-                        requestMatchers("/api/v1/user/", "/api/v1/user/client", "/swagger-ui/**"
-                                , "/swagger-resources/**", "/v3/api-docs/**", "/v2/api-docs/**")
-                        .permitAll()
-                        .anyRequest().authenticated())
+                .authorizeRequests()
+                .antMatchers("/api/v1/user/", "/api/v1/user/client", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**", "/v2/api-docs/**").permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

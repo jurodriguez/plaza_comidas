@@ -1,10 +1,10 @@
 package com.example.user.services.domain.model;
 
 public enum ERoles {
-    ADMINISTRATOR(1L, "Administrator"),
+    ADMINISTRATOR(1L, "ADMINISTRATOR"),
     OWNER(2L, "OWNER"),
-    EMPLOYEE(3L, "Employee"),
-    CUSTOMER(4L, "Customer");
+    EMPLOYEE(3L, "EMPLOYEE"),
+    CUSTOMER(4L, "CUSTOMER");
 
     private final Long id;
 
@@ -27,6 +27,15 @@ public enum ERoles {
         for (ERoles rol : ERoles.values()) {
             if (rol.getId().equals(id)) {
                 return rol.name().toUpperCase();
+            }
+        }
+        return null;
+    }
+
+    public static Long getIdByRoleName(String roleName) {
+        for (ERoles rol : ERoles.values()) {
+            if (rol.getName().equals(roleName)) {
+                return rol.getId();
             }
         }
         return null;
