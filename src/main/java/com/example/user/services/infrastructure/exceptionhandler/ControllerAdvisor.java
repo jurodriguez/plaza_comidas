@@ -5,7 +5,7 @@ import com.example.user.services.infrastructure.exception.OwnerNotAuthenticatedE
 import com.example.user.services.infrastructure.exception.PhoneNumberException;
 import com.example.user.services.infrastructure.exception.RestaurantIdInvalidException;
 import com.example.user.services.infrastructure.exception.UserIsNotLegalAgeException;
-import com.example.user.services.infrastructure.exception.UserNotAuthenticatedException;
+import com.example.user.services.infrastructure.exception.UserWithRoleInvalidException;
 import com.example.user.services.infrastructure.exception.UserNumberDocumentIncorrectException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -48,9 +48,9 @@ public class ControllerAdvisor {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap(MESSAGE, ExceptionResponse.PHONE_NUMBER_INCORRECT.getMessage()));
     }
 
-    @ExceptionHandler(UserNotAuthenticatedException.class)
-    public ResponseEntity<Map<String, String>> handleUserNotAuthenticatedException(UserNotAuthenticatedException ignoredUserNotAuthenticatedException) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap(MESSAGE, ExceptionResponse.USER_NOT_AUTHENTICATED.getMessage()));
+    @ExceptionHandler(UserWithRoleInvalidException.class)
+    public ResponseEntity<Map<String, String>> handleUserWithRoleInvalidException(UserWithRoleInvalidException ignoredUserWithRoleInvalidException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap(MESSAGE, ExceptionResponse.USER_WITH_ROLE_INVALID.getMessage()));
     }
 
     @ExceptionHandler(OwnerNotAuthenticatedException.class)
