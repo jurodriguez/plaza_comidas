@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 
 @RestController
 @Slf4j
@@ -46,6 +48,17 @@ public class UserRestController {
         userHandler.saveUserInUsers(userRequest);
         userHandler.saveRestaurantEmployee(userRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @Operation(summary = "Add a new client")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Client created", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Client already exists", content = @Content)
+    })
+    @PostMapping("/customer")
+    public ResponseEntity<Void> saveCustomer(@Valid @RequestBody UserRequest customer) {
+        userHandler.saveUserInUsers(customer);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")

@@ -34,4 +34,17 @@ public class FactoryUsersDataTest {
         user.setRoleId(ERoles.EMPLOYEE.getId());
         return user;
     }
+
+    public static User getCustomerUser() {
+        User user = new User();
+        user.setId(3L);
+        user.setName("catalina");
+        user.setLastName("gonzalez");
+        user.setCellPhone("+573179874561");
+        user.setDocumentNumber("6214531");
+        user.setEmail("luisa@gmail.com");
+        user.setPassword("password");
+        user.setRoleId(ERoles.CUSTOMER.getId());
+        return user;
+    }
 }

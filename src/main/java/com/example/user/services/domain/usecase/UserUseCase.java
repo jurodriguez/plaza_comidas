@@ -14,7 +14,6 @@ import com.example.user.services.domain.util.UtilDateTime;
 import com.example.user.services.domain.util.UtilNumbers;
 import com.example.user.services.infrastructure.exception.OwnerNotAuthenticatedException;
 import com.example.user.services.infrastructure.exception.RestaurantIdInvalidException;
-import com.example.user.services.infrastructure.exception.UserNotAuthenticatedException;
 import com.example.user.services.infrastructure.exception.PhoneNumberException;
 import com.example.user.services.infrastructure.exception.UserIsNotLegalAgeException;
 import com.example.user.services.infrastructure.exception.UserNumberDocumentIncorrectException;
@@ -54,19 +53,19 @@ public class UserUseCase implements IUserServicePort {
     }
 
     private void assignRole(User user) {
-        String role = getAuthRole();
+        String role = token.getBearerToken();
 
-        if (role.equals(ERoles.ADMINISTRATOR.getName())) {
-            user.setRoleId(ERoles.OWNER.getId());
-        } else if (role.equals(ERoles.OWNER.getName())) {
-            user.setRoleId(ERoles.EMPLOYEE.getId());
+        if (role == null) {
+            user.setRoleId(ERoles.CUSTOMER.getId());
+        } else {
+            if (role.equals(ERoles.ADMINISTRATOR.getName())) {
+                user.setRoleId(ERoles.OWNER.getId());
+            } else if (role.equals(ERoles.OWNER.getName())) {
+                user.setRoleId(ERoles.EMPLOYEE.getId());
+            } else {
+                user.setRoleId(null);
+            }
         }
-    }
-
-    private String getAuthRole() {
-        String bearerToken = token.getBearerToken();
-        if (bearerToken == null) throw new UserNotAuthenticatedException();
-        return token.getAuthenticatedUserRole(bearerToken).toUpperCase();
     }
 
     private void saveValidations(User user) {
