@@ -53,7 +53,7 @@ public class UserUseCase implements IUserServicePort {
     }
 
     private void assignRole(User user) {
-        String role = token.getBearerToken();
+        String role = getAuthenticatedRole();
 
         if (role == null) {
             user.setRoleId(ERoles.CUSTOMER.getId());
@@ -66,6 +66,12 @@ public class UserUseCase implements IUserServicePort {
                 user.setRoleId(null);
             }
         }
+    }
+
+    private String getAuthenticatedRole() {
+        String bearerToken = token.getBearerToken();
+        String rol = bearerToken != null ? token.getAuthenticatedUserRole(bearerToken) : null;
+        return rol;
     }
 
     private void saveValidations(User user) {
